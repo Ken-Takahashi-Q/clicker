@@ -6,10 +6,14 @@ import Button from "./components/button";
 
 export default function Home() {
   const [count, setCount] = useState<number>(0);
+  const [recent, setRecent] = useState<number>(0);
 
   const handleMinus = () => setCount((prev) => prev - 1);
   const handlePlus = () => setCount((prev) => prev + 1);
-  const handleReset = () => setCount(0);
+  const handleReset = () => {
+    setRecent(count);
+    setCount(0);
+  };
 
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen bg-gray-800 text-white">
@@ -25,7 +29,16 @@ export default function Home() {
           <h2 className="px-4 text-5xl font-semibold">{count}</h2>
           <Button type="plus" onClick={handlePlus} icon={faPlus} />
         </div>
-        <Button type="reset" onClick={handleReset} icon={faRedo} text="Reset" />
+
+        <div className="flex flex-col items-center gap-4 w-full">
+          <p className="text-gray-300">Last time: {recent}</p>
+          <Button
+            type="reset"
+            onClick={handleReset}
+            icon={faRedo}
+            text="Reset"
+          />
+        </div>
       </div>
     </div>
   );
