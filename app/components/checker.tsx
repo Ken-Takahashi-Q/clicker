@@ -62,19 +62,19 @@ const Checker: React.FC<CheckerProps> = ({
 
   return (
     <div
-      className={`flex flex-col justify-between items-center mb-6 p-2 w-full h-56 rounded-[1.5rem]
+      className={`flex flex-col justify-between items-center mb-4 p-2 w-full h-56 rounded-[1.5rem]
         ${palette["backgroundPrimary"]}`}
     >
       {mode !== "" ? (
         <div
-          className={`transition-all duration-300 ${
+          className={`flex flex-col justify-between w-[85%] h-full transition-all duration-300 ${
             mode !== "" ? "opacity-100" : "opacity-0"
           }`}
         >
           <div className="relative flex flex-col items-center w-full">
             {mode}
             <CloseButton onClick={handleAskDelete} />
-            <div className="flex justify-between items-center w-full my-2 gap-4">
+            <div className="flex justify-between items-center w-full mt-2 mb-4 gap-4">
               <Button
                 type="minus"
                 onClick={() => handleMinus(index)}
@@ -88,13 +88,9 @@ const Checker: React.FC<CheckerProps> = ({
                 icon={faPlus}
               />
             </div>
-          </div>
 
-          <div className="flex flex-col items-center gap-2 w-full">
-            <div className="flex flex-col items-center">
-              <div className={`duration-800 transition-all`}>
-                Last time {counter.recent}
-              </div>
+            <div className="flex flex-col items-center mb-2">
+              Last time {counter.recent}
             </div>
             <ResetButton
               onClick={() => handleReset(index)}
@@ -112,7 +108,7 @@ const Checker: React.FC<CheckerProps> = ({
           </Modal>
         </div>
       ) : (
-        <div className="flex flex-wrap justify-center items-center gap-1 w-full h-full">
+        <div className="flex flex-wrap justify-center items-center gap-1 w-[85%] h-full">
           {modes.map((value, index) => {
             return (
               <button
