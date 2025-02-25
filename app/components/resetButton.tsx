@@ -2,19 +2,19 @@ import { faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { palette } from "../palette";
 
-interface RecentButtonProps {
+interface ResetButtonProps {
   onClick: () => void;
   disabled?: boolean;
 }
 
-const RecentButton: React.FC<RecentButtonProps> = ({
+const ResetButton: React.FC<ResetButtonProps> = ({
   onClick,
   disabled = false,
 }) => {
   return (
     <button
-      className={`p-4 h-28 flex justify-center items-center text-3xl text-white rounded-[40px] transition-all duration-300 
-        w-full ${palette["primary"]} ${palette["primaryHover"]}`}
+      className={`p-4 h-12 flex justify-center items-center text-xl text-white rounded-[1rem] transition-all duration-300 
+        w-full ${palette["primary"]} ${palette["primaryHover"]} disabled:cursor-not-allowed`}
       onClick={onClick}
       disabled={disabled}
     >
@@ -23,4 +23,4 @@ const RecentButton: React.FC<RecentButtonProps> = ({
   );
 };
 
-export default RecentButton;
+export default ResetButton;

@@ -18,14 +18,14 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
 }) => {
   const buttonStyles = {
-    minus: `w-28 ${palette.secondary} ${palette["disable"]} disabled:cursor-not-allowed ${palette["secondaryHover"]}`,
-    plus: `w-28 ${palette.primary} ${palette["primaryHover"]}`,
+    minus: `${palette.secondary} ${palette["disable"]} ${palette["secondaryHover"]}`,
+    plus: `${palette.primary} ${palette["primaryHover"]}`,
   };
 
   return (
     <button
-      className={`p-4 h-28 flex justify-center items-center text-3xl rounded-full transition-all duration-300 
-        ${buttonStyles[type]}`}
+      className={`p-4 h-20 w-20 flex justify-center items-center text-3xl rounded-full transition-all duration-300 
+        ${buttonStyles[type]} disabled:cursor-not-allowed`}
       onClick={onClick}
       disabled={disabled}
     >

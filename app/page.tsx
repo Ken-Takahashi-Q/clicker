@@ -1,82 +1,80 @@
 "use client";
 
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useState } from "react";
-import Button from "./components/button";
-import RecentButton from "./components/recentButton";
+import { useState } from "react";
 import { palette } from "./palette";
+import Checker from "./components/checker";
+
+export interface Counter {
+  count: number;
+  recent: number;
+}
 
 export default function Home() {
-  const [count, setCount] = useState<number>(0);
-  const [recent, setRecent] = useState<number[]>([]);
-  const [isVisible, setIsVisible] = useState(false);
+  const [counters, setCounters] = useState<Counter[]>([
+    { count: 0, recent: 0 },
+    { count: 0, recent: 0 },
+    { count: 0, recent: 0 },
+    { count: 0, recent: 0 },
+    { count: 0, recent: 0 },
+  ]);
 
-  const handleMinus = () => setCount((prev) => prev - 1);
-  const handlePlus = () => setCount((prev) => prev + 1);
-  const handleReset = () => {
-    updateRecent(count);
-    setCount(0);
+  const handleUpdate = (index: number, newCount: number) => {
+    setCounters((prev) =>
+      prev.map((counter, i) =>
+        i === index ? { count: newCount, recent: counter.recent } : counter
+      )
+    );
   };
 
-  const updateRecent = (newCount: number) => {
-    setRecent((prev) => {
-      const updated = [newCount, ...prev];
-      if (updated.length > 3) {
-        updated.pop();
-      }
-      return updated;
-    });
+  const handleMinus = (index: number) => {
+    if (counters[index].count > 0) {
+      handleUpdate(index, counters[index].count - 1);
+    }
   };
 
-  useEffect(() => {
-    // Trigger the animation on recent change
-    setIsVisible(false);
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 100); // Delay to trigger animation after recent is updated
+  const handlePlus = (index: number) => {
+    handleUpdate(index, counters[index].count + 1);
+  };
 
-    return () => clearTimeout(timer); // Clean up the timer
-  }, [recent]);
+  const handleReset = (index: number) => {
+    setCounters((prev) =>
+      prev.map((counter, i) =>
+        i === index ? { count: 0, recent: counter.count } : counter
+      )
+    );
+  };
+
+  const handleDelete = (index: number) => {
+    setCounters((prev) =>
+      prev.map((counter, i) =>
+        i === index ? { count: 0, recent: 0 } : counter
+      )
+    );
+  };
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen h-screen bg-gray-200 text-white">
+    <div className="flex flex-col justify-center items-center w-screen min-h-screen bg-gray-200">
       <div
-        className={`flex flex-col justify-between items-center px-6 py-20 w-full h-full md:w-[400px] ${palette["background"]} shadow-lg rounded-2xl`}
+        className={`flex flex-col justify-between items-center px-6 py-12 w-full h-full md:w-[400px]
+          ${palette["backgroundSecondary"]} shadow-lg rounded-2xl`}
       >
-        <div className="flex flex-col items-center gap-24 w-full">
-          <h1 className="text-4xl font-bold">Clicker</h1>
-          <div className="flex w-full justify-between items-center gap-4">
-            <Button
-              type="minus"
-              onClick={handleMinus}
-              disabled={count < 1}
-              icon={faMinus}
-            />
-            <h2 className="px-4 text-5xl font-semibold">{count}</h2>
-            <Button type="plus" onClick={handlePlus} icon={faPlus} />
+        <div className="flex flex-col items-center w-full">
+          <div className="flex flex-col items-center mb-8">
+            <h1 className="text-4xl font-bold">Crochecker</h1>
+            <h2 className="text-2xl font-bold">クロチェッカー</h2>
           </div>
-        </div>
 
-        <div className="w-full">
-          <div className="flex flex-col items-center gap-4 w-full">
-            <div className="flex flex-col items-center">
-              {recent.map((value, index) => (
-                <div
-                  key={index}
-                  className={`duration-800 ${
-                    isVisible
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-4 scale-80"
-                  } transition-all ${
-                    index === 1 ? "text-sm" : index === 2 ? "text-xs" : ""
-                  }`}
-                >
-                  Last time {value}
-                </div>
-              ))}
-            </div>
-            <RecentButton onClick={handleReset} disabled={count < 1} />
-          </div>
+          {counters.map((counter, index) => (
+            <Checker
+              key={index}
+              index={index}
+              counter={counter}
+              handlePlus={() => handlePlus(index)}
+              handleMinus={() => handleMinus(index)}
+              handleReset={() => handleReset(index)}
+              handleDelete={() => handleDelete(index)}
+            />
+          ))}
         </div>
       </div>
     </div>

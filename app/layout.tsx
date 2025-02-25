@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Sour_Gummy } from "next/font/google";
+import { Geist, Mochiy_Pop_One } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -7,9 +7,10 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const sourGummy = Sour_Gummy({
-  variable: "--font-sour-gummy",
+const yuseiMagic = Mochiy_Pop_One({
+  variable: "--font-mochiy-pop-one-regular",
   subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sourGummy.variable} ${geistSans.variable} antialiased`}
+        className={`${yuseiMagic.variable} ${geistSans.variable} antialiased`}
       >
         {children}
       </body>
