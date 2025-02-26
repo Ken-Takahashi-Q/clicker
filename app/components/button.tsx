@@ -3,31 +3,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { palette } from "../palette";
 
 interface ButtonProps {
-  type: "minus" | "plus";
+  type: "start";
   text?: string;
   icon: IconProp;
   onClick: () => void;
   disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({
-  type,
-  text,
-  icon,
-  onClick,
-  disabled = false,
-}) => {
+const Button: React.FC<ButtonProps> = ({ type, text, icon, onClick }) => {
   const buttonStyles = {
-    minus: `${palette.secondary} ${palette["disable"]} ${palette["secondaryHover"]}`,
-    plus: `${palette.primary} ${palette["primaryHover"]}`,
+    start: `${palette.secondary} ${palette["disable"]} ${palette["secondaryHover"]}`,
   };
 
   return (
     <button
-      className={`p-4 h-20 w-20 flex justify-center items-center text-3xl rounded-full transition-all duration-300 
-        ${buttonStyles[type]} disabled:cursor-not-allowed`}
+      className={`p-4 h-12 w-full flex justify-center items-center text-xl rounded-full transition-all duration-300 
+        ${buttonStyles[type]}`}
       onClick={onClick}
-      disabled={disabled}
     >
       <FontAwesomeIcon icon={icon} />
       {text && <p className="ml-2">{text}</p>}

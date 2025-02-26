@@ -1,11 +1,15 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-import Button from "./button";
+import { faMinus, faPlay, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Counter } from "../page";
 import { palette } from "../palette";
 import { useState } from "react";
 import { Modal } from "antd";
 import CloseButton from "./closeButton";
 import ResetButton from "./resetButton";
+import ConfirmModal from "./confirmModal";
+import ModeSelect from "./modeSelect";
+import CircleButton from "./circleButton";
+import Button from "./button";
+import { modesChain, modesLoop, modesRing } from "../utils";
 
 interface CheckerProps {
   index: number;
@@ -24,26 +28,32 @@ const Checker: React.FC<CheckerProps> = ({
   handleReset,
   handleDelete,
 }) => {
-  // const modes: CheckboxGroupProps<string>["options"] = [
-  //   { label: "Chain", value: "Chain" },
-  //   { label: "Single Crochet", value: "Single Crochet" },
-  //   { label: "Half Double Crochet", value: "Half Double Crochet" },
-  //   { label: "Double Crochet", value: "Double Crochet" },
-  //   { label: "Treble Crochet", value: "Treble Crochet" },
+  // const modes: string[] = [
+  //   "Chain",
+  //   "Single Crochet",
+  //   "Half Double Crochet",
+  //   "Double Crochet",
+  //   "Treble Crochet",
   // ];
-  const modes: string[] = [
-    "Chain",
-    "Single Crochet",
-    "Half Double Crochet",
-    "Double Crochet",
-    "Treble Crochet",
-  ];
 
-  const [mode, setMode] = useState<string>("");
+  const [modeLoop, setModeLoop] = useState<string>(modesLoop[0].value);
+  const [modeChain, setModeChain] = useState<string>(modesChain[0].value);
+  const [modeRing, setModeRing] = useState<string>(modesRing[0].value);
+  const [start, setStart] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const handleSelectMode = (mode: string) => {
-    setMode(mode);
+  const handleSelectModeLoop = (modeLoop: string) => {
+    setModeLoop(modeLoop);
+  };
+  const handleSelectModeChain = (modeChain: string) => {
+    setModeChain(modeChain);
+  };
+  const handleSelectModeRing = (modeRing: string) => {
+    setModeRing(modeRing);
+  };
+
+  const handleStart = () => {
+    setStart(true);
   };
 
   const handleAskDelete = () => {
@@ -56,39 +66,43 @@ const Checker: React.FC<CheckerProps> = ({
 
   const handleConfirmDelete = () => {
     handleDelete(index);
-    setMode(""); // Reset the mode selection
+    setStart(false);
+    setModeChain("Chain");
     setModalVisible(false);
   };
 
   return (
     <div
-      className={`flex flex-col justify-between items-center mb-4 p-2 w-full h-56 rounded-[1.5rem]
+      className={`flex flex-col justify-between items-center mb-4 p-2 w-full h-68 rounded-[1.5rem]
         ${palette["backgroundPrimary"]}`}
     >
-      {mode !== "" ? (
+      {start ? (
         <div
           className={`flex flex-col justify-between w-[85%] h-full transition-all duration-300 ${
-            mode !== "" ? "opacity-100" : "opacity-0"
+            start ? "opacity-100" : "opacity-0"
           }`}
         >
           <div className="relative flex flex-col items-center w-full">
-            {mode}
+            <div className="flex flex-col items-center">
+              <p>{modeChain}</p>
+              <p>{modeLoop}</p>
+              <p>{modeRing}</p>
+            </div>
             <CloseButton onClick={handleAskDelete} />
             <div className="flex justify-between items-center w-full mt-2 mb-4 gap-4">
-              <Button
+              <CircleButton
                 type="minus"
                 onClick={() => handleMinus(index)}
                 disabled={counter.count < 1}
                 icon={faMinus}
               />
               <h2 className="px-4 text-5xl font-semibold">{counter.count}</h2>
-              <Button
+              <CircleButton
                 type="plus"
                 onClick={() => handlePlus(index)}
                 icon={faPlus}
               />
             </div>
-
             <div className="flex flex-col items-center mb-2">
               Last time {counter.recent}
             </div>
@@ -106,10 +120,16 @@ const Checker: React.FC<CheckerProps> = ({
           >
             Are you sure to delete?
           </Modal>
+          <ConfirmModal
+            open={modalVisible}
+            index={index}
+            onCancel={handleCloseModal}
+            onOk={handleConfirmDelete}
+          />
         </div>
       ) : (
         <div className="flex flex-wrap justify-center items-center gap-1 w-[85%] h-full">
-          {modes.map((value, index) => {
+          {/* {modes.map((value, index) => {
             return (
               <button
                 className={`p-2 w-fit ${palette["backgroundSecondary"]} rounded-xl ${palette["secondaryHover"]}`}
@@ -119,7 +139,17 @@ const Checker: React.FC<CheckerProps> = ({
                 {value}
               </button>
             );
-          })}
+          })} */}
+          <ModeSelect options={modesChain} onChange={handleSelectModeChain} />
+          <ModeSelect options={modesLoop} onChange={handleSelectModeLoop} />
+          <ModeSelect options={modesRing} onChange={handleSelectModeRing} />
+          <Button
+            type="start"
+            text="Start"
+            onClick={handleStart}
+            disabled={counter.count < 1}
+            icon={faPlay}
+          />
         </div>
       )}
     </div>

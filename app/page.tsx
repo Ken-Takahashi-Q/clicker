@@ -53,9 +53,9 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen min-h-screen bg-gray-200">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-200">
       <div
-        className={`flex flex-col justify-between items-center px-6 py-12 w-full h-full md:w-[400px]
+        className={`flex flex-col justify-between items-center px-6 py-12 w-full min-h-screen md:w-[400px]
           ${palette["backgroundSecondary"]} shadow-lg rounded-2xl`}
       >
         <div className="flex flex-col items-center w-full">
