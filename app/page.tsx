@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { palette } from "./palette";
 import Checker from "./components/checker";
+import { modesChain, modesLoop, modesRing } from "./utils";
 
 export interface Counter {
   count: number;
@@ -17,6 +18,49 @@ export default function Home() {
     { count: 0, recent: 0 },
     { count: 0, recent: 0 },
   ]);
+  const [modeLoop, setModeLoop] = useState<string[]>([
+    modesLoop[0].value,
+    modesLoop[0].value,
+    modesLoop[0].value,
+    modesLoop[0].value,
+    modesLoop[0].value
+  ]);
+  const [modeChain, setModeChain] = useState<string[]>([
+    modesChain[0].value,
+    modesChain[0].value,
+    modesChain[0].value,
+    modesChain[0].value,
+    modesChain[0].value
+  ]);
+  const [modeRing, setModeRing] = useState<string[]>([
+    modesRing[0].value,
+    modesRing[0].value,
+    modesRing[0].value,
+    modesRing[0].value,
+    modesRing[0].value
+  ]);
+
+  const handleSelectModeLoop = (index: number, modeLoop: string) => {
+    setModeLoop((prev) =>
+      prev.map((counter, i) =>
+        i === index ?  modeLoop  : counter
+      )
+    );
+  };
+  const handleSelectModeChain = (index: number, modeChain: string) => {
+    setModeChain((prev) =>
+      prev.map((counter, i) =>
+        i === index ?  modeChain  : counter
+      )
+    );
+  };
+  const handleSelectModeRing = (index: number, modeRing: string) => {
+    setModeRing((prev) =>
+      prev.map((counter, i) =>
+        i === index ?  modeRing  : counter
+      )
+    );
+  };
 
   const handleUpdate = (index: number, newCount: number) => {
     setCounters((prev) =>
@@ -69,6 +113,12 @@ export default function Home() {
               key={index}
               index={index}
               counter={counter}
+              modeLoop={modeLoop[index]}
+              modeChain={modeChain[index]}
+              modeRing={modeRing[index]}
+              handleSelectModeLoop={handleSelectModeLoop}
+              handleSelectModeChain={handleSelectModeChain}
+              handleSelectModeRing={handleSelectModeRing}
               handlePlus={() => handlePlus(index)}
               handleMinus={() => handleMinus(index)}
               handleReset={() => handleReset(index)}
