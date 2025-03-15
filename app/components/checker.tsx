@@ -14,6 +14,12 @@ import { modesChain, modesLoop, modesRing } from "../utils";
 interface CheckerProps {
   index: number;
   counter: Counter;
+  modeChain: string;
+  modeLoop: string;
+  modeRing: string;
+  handleSelectModeLoop: (index: number, mode: string) => void;
+  handleSelectModeChain: (index: number, mode: string) => void;
+  handleSelectModeRing: (index: number, mode: string) => void;
   handlePlus: (index: number) => void;
   handleMinus: (index: number) => void;
   handleReset: (index: number) => void;
@@ -23,6 +29,12 @@ interface CheckerProps {
 const Checker: React.FC<CheckerProps> = ({
   index,
   counter,
+  modeChain,
+  modeLoop,
+  modeRing,
+  handleSelectModeLoop,
+  handleSelectModeChain,
+  handleSelectModeRing,
   handlePlus,
   handleMinus,
   handleReset,
@@ -36,21 +48,8 @@ const Checker: React.FC<CheckerProps> = ({
   //   "Treble Crochet",
   // ];
 
-  const [modeLoop, setModeLoop] = useState<string>(modesLoop[0].value);
-  const [modeChain, setModeChain] = useState<string>(modesChain[0].value);
-  const [modeRing, setModeRing] = useState<string>(modesRing[0].value);
   const [start, setStart] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
-  const handleSelectModeLoop = (modeLoop: string) => {
-    setModeLoop(modeLoop);
-  };
-  const handleSelectModeChain = (modeChain: string) => {
-    setModeChain(modeChain);
-  };
-  const handleSelectModeRing = (modeRing: string) => {
-    setModeRing(modeRing);
-  };
 
   const handleStart = () => {
     setStart(true);
@@ -67,7 +66,7 @@ const Checker: React.FC<CheckerProps> = ({
   const handleConfirmDelete = () => {
     handleDelete(index);
     setStart(false);
-    setModeChain("Chain");
+    handleSelectModeChain(index, "Chain");
     setModalVisible(false);
   };
 

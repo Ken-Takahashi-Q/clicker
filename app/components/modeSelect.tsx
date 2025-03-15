@@ -2,7 +2,7 @@ import { Select } from "antd";
 import { ModeChoice } from "../utils";
 
 interface ModeSelectProps {
-  onChange: (mode: string) => void;
+  onChange: (index: number, mode: string) => void;
   options: ModeChoice[];
 }
 
